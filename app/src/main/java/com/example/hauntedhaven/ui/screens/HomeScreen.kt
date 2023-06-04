@@ -46,7 +46,6 @@ import com.example.hauntedhaven.ui.theme.PhantomBlack
 fun HomeScreen(
     navController: NavController,
     viewModel: HauntedViewModel
-
 ) {
     val featuredListings by viewModel.getFeaturedHauntedPlaces().collectAsState(emptyList())
 
@@ -54,17 +53,16 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(PhantomBlack)
-
     ) {
-        LazyColumn() {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
             item {
-                GreetingSection();
-                FeaturedSection(navController=navController, featuredListings = featuredListings);
+                GreetingSection()
+                FeaturedSection(navController = navController, featuredListings = featuredListings)
                 viewAllListings(navController = navController)
             }
-
         }
-
     }
 }
 
