@@ -1,5 +1,6 @@
 package com.example.hauntedhaven.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.hauntedhaven.R
 import com.example.hauntedhaven.Screen
@@ -45,9 +47,9 @@ import com.example.hauntedhaven.ui.theme.PhantomBlack
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: HauntedViewModel
+    viewModel: HauntedViewModel = viewModel(factory=HauntedViewModel.factory)
 ) {
-    val featuredListings by viewModel.getFeaturedHauntedPlaces().collectAsState(emptyList())
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -55,16 +57,86 @@ fun HomeScreen(
             .background(PhantomBlack)
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+           // modifier = Modifier.fillMaxSize()
         ) {
             item {
                 GreetingSection()
-                FeaturedSection(navController = navController, featuredListings = featuredListings)
+                if (uiState.featuredHauntedPlaces.isNotEmpty()) {
+                    FeaturedSection(navController = navController, featuredListings = uiState.featuredHauntedPlaces)
+                }
                 viewAllListings(navController = navController)
             }
         }
     }
 }
+
+
+@Composable
+fun FeaturedSection(
+    navController: NavController,
+    featuredListings: List<HauntedPlace>
+) {
+    val imageMapper = ImageMapper()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 17.dp, bottom = 17.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Featured listings",
+            color = GhostWhite,
+            fontSize = 40.sp,
+            fontFamily = FontFamily(Font(R.font.gothic)),
+            modifier = Modifier.padding(15.dp)
+        )
+
+        for (listing in featuredListings) {
+            // Show the first image of the listing
+            val imageResourceIds = imageMapper.getImageResourceIds(listing.id)
+            Box(
+                Modifier
+                    .clickable { navController.navigate(Screen.DetailedScreen.route + "/${listing.id}") }
+            ) {
+                Column(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp)),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (imageResourceIds.isNotEmpty()) {
+                        Image(
+                            painter = painterResource(id = imageResourceIds[0]),
+                            contentDescription = "Listing Image",
+                            modifier = Modifier
+                                .size(150.dp)
+                                .padding(top = 10.dp, bottom = 10.dp)
+                        )
+                    }
+
+                    Column(modifier = Modifier.padding(10.dp)) {
+                        Text(
+                            text = "${listing.name}",
+                            color = GhostWhite,
+                            fontFamily = FontFamily(Font(R.font.gothic))
+                        )
+                        Text(
+                            text = "${listing.location}",
+                            color = GhostWhite,
+                            fontFamily = FontFamily(Font(R.font.gothic))
+                        )
+                        Text(
+                            text = "${listing.quick_desc}",
+                            color = GhostWhite,
+                            fontFamily = FontFamily(Font(R.font.gothic))
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 
 @Composable
@@ -79,91 +151,20 @@ fun GreetingSection() {
             .padding(15.dp),
 
 
-    ) {
+        ) {
 
         Image(
-            painter = painterResource(id = R.drawable.logohh2) ,
+            painter = painterResource(id = R.drawable.phatonhaven) ,
             contentDescription ="Logo",
 
-        )
+            )
 
     }
 
 
 
-    }
-
-
-
-
-
-@Composable
-fun FeaturedSection(
-    navController: NavController,
-    featuredListings: List<HauntedPlace>
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 17.dp)
-            .padding(bottom = 17.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Featured listings",
-            color = GhostWhite,
-            fontSize = 40.sp,
-            fontFamily = FontFamily(Font(R.font.gothic)),
-            modifier = Modifier.padding(15.dp)
-        )
-
-        for (listing in featuredListings) {
-            /*
-            Image(
-                painter = painterResource(id = getDrawableResourceByName(listing.img)),
-                contentDescription = listing.names,
-                modifier = Modifier
-                    .size(150.dp)
-                    .clickable { navController.navigate(Screen.DetailedScreenLeap.route) }
-            )
-
-             */
-
-            Text(
-                text = "Name: ${listing.names}",
-                color = GhostWhite,
-                fontFamily = FontFamily(Font(R.font.gothic)),
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .clickable { navController.navigate(Screen.DetailedScreenLeap.route) }
-            )
-            Text(
-                text = "Location: ${listing.locations}",
-                color = GhostWhite,
-                fontFamily = FontFamily(Font(R.font.gothic)),
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .clickable { navController.navigate(Screen.DetailedScreenLeap.route) }
-            )
-            Text(
-                text = "Price: $${listing.current_price}",
-                color = GhostWhite,
-                fontFamily = FontFamily(Font(R.font.gothic)),
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .clickable { navController.navigate(Screen.DetailedScreenLeap.route) }
-            )
-            Text(
-                text = "Description: ${listing.quick_description}",
-                color = GhostWhite,
-                fontFamily = FontFamily(Font(R.font.gothic)),
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .clickable { navController.navigate(Screen.DetailedScreenLeap.route) }
-            )
-        }
-    }
 }
+
 
 
 @Composable
@@ -192,7 +193,7 @@ fun viewAllListings(
     ) {
         Button(onClick =
         {
-        navController.navigate(Screen.ListingsPage.route)
+        navController.navigate(Screen.ListingsScreen.route)
 
         }
             ,colors = ButtonDefaults.buttonColors(BloodRed)) {

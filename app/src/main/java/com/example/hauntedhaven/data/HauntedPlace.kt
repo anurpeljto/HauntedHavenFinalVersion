@@ -5,21 +5,20 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "HauntedLocation")
+@Entity(tableName = "HauntedPlace")
 data class HauntedPlace(
-
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    @ColumnInfo(name = "name") val names: String,
-    @ColumnInfo(name = "location") val locations: String,
-    @ColumnInfo(name = "price") val current_price: Double,
-    @ColumnInfo(name = "quick_desc") val quick_description: String,
-    @ColumnInfo(name = "event_desc") val event_description: String, //not used
-    @ColumnInfo(name = "sleep_available") val sleep: String,
-    @ColumnInfo(name = "date") val available_date: String,
-    @ColumnInfo(name = "available_ppl") val people: Int,
-    @ColumnInfo(name = "desc") val description: String,
-    @ColumnInfo(name = "warning") val warning: String, //not used
-    @ColumnInfo(name = "imageUri") val img: String,
-    @ColumnInfo(name = "category") val categorys: String
+    @ColumnInfo(name = "id") val id: Int,
+    @ColumnInfo(name = "name") val name: String?,
+    @ColumnInfo(name = "location") val location: String?,
+    @ColumnInfo(name = "price") val price: Double?,
+    @ColumnInfo(name = "quick_desc") val quick_desc: String?,
+    @ColumnInfo(name = "event_desc") val event_desc: String?,
+    @ColumnInfo(name = "sleep_available") val sleep_available: Int?,
+    @ColumnInfo(name = "date") val date: String?,
+    @ColumnInfo(name = "available_ppl") val available_ppl: Int?,
+    @ColumnInfo(name = "desc") val desc: String?,
+    @ColumnInfo(name = "warning") val warning: String?,
+    @ColumnInfo(name = "imageUri") val imageUri: String?,
+    @ColumnInfo(name = "category") val category: String?
 )

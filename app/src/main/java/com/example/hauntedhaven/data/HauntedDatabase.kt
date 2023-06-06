@@ -5,8 +5,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.hauntedhaven.HauntedHavenApplication
 
-@Database(entities = [HauntedPlace::class], version=1, exportSchema=false)
-abstract class HauntedDatabase: RoomDatabase() {
+@Database(entities = [HauntedPlace::class], version = 1, exportSchema = false)
+abstract class HauntedDatabase : RoomDatabase() {
     abstract fun hauntedDao(): HauntedDao
 
     companion object {
@@ -15,20 +15,21 @@ abstract class HauntedDatabase: RoomDatabase() {
 
         fun getDatabase(context: HauntedHavenApplication): HauntedDatabase {
             return INSTANCE ?: synchronized(this) {
-                Room.databaseBuilder(
-                    context,
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
                     HauntedDatabase::class.java,
                     "haunted_database"
                 )
-                    .createFromAsset("database/HauntedDatabase.db")
+                    .createFromAsset("database/HauntedDatabase.db") // Update the asset file path
                     .fallbackToDestructiveMigration()
                     .build()
-                    .also {
-                        INSTANCE = it
-                    }
+
+                INSTANCE = instance
+                instance
             }
         }
     }
 }
+
 
 
