@@ -35,7 +35,7 @@ fun SetupNavGraph(
             if (hauntedPlaceId != null) {
                 DetailedListing(navController = navController, hauntedPlaceId = hauntedPlaceId, viewModel = viewModel)
             } else {
-                //  crash
+
             }
         }
 

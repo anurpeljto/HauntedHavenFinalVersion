@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,9 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -57,7 +60,7 @@ fun HomeScreen(
             .background(PhantomBlack)
     ) {
         LazyColumn(
-           // modifier = Modifier.fillMaxSize()
+            // modifier = Modifier.fillMaxSize()
         ) {
             item {
                 GreetingSection()
@@ -93,7 +96,6 @@ fun FeaturedSection(
         )
 
         for (listing in featuredListings) {
-            // Show the first image of the listing
             val imageResourceIds = imageMapper.getImageResourceIds(listing.id)
             Box(
                 Modifier
@@ -114,18 +116,31 @@ fun FeaturedSection(
                         )
                     }
 
-                    Column(modifier = Modifier.padding(10.dp)) {
+                    Column(
+                        modifier = Modifier
+                            .padding(15.dp)
+                            .padding(bottom = 10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
+                            modifier=Modifier
+                                .padding(bottom = 15.dp),
+                            fontWeight = FontWeight.Bold,
                             text = "${listing.name}",
                             color = GhostWhite,
                             fontFamily = FontFamily(Font(R.font.gothic))
                         )
                         Text(
+                            modifier=Modifier.padding(bottom = 15.dp),
                             text = "${listing.location}",
+                            fontWeight = FontWeight.Thin,
                             color = GhostWhite,
                             fontFamily = FontFamily(Font(R.font.gothic))
                         )
                         Text(
+                            modifier=Modifier
+                                .fillMaxWidth()
+                                .padding(start = 50.dp)
+                                .padding(end = 50.dp),
                             text = "${listing.quick_desc}",
                             color = GhostWhite,
                             fontFamily = FontFamily(Font(R.font.gothic))
@@ -179,8 +194,8 @@ fun viewAllListings(
     ){
         Text(text = "And many more...",
             fontFamily = FontFamily(Font(R.font.gothic)),
-        fontSize = 30.sp,
-        color= GhostWhite
+            fontSize = 30.sp,
+            color= GhostWhite
         )
 
     }
@@ -189,11 +204,11 @@ fun viewAllListings(
         modifier= Modifier
             .padding(17.dp)
             .fillMaxWidth(),
-    horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center
     ) {
         Button(onClick =
         {
-        navController.navigate(Screen.ListingsScreen.route)
+            navController.navigate(Screen.ListingsScreen.route)
 
         }
             ,colors = ButtonDefaults.buttonColors(BloodRed)) {

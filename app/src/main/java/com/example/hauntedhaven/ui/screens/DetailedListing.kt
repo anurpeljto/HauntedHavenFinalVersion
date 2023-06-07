@@ -43,7 +43,6 @@ import com.example.hauntedhaven.ui.screens.TopBarDetailed
 fun DetailedListing(navController: NavController, hauntedPlaceId: Int, viewModel: HauntedViewModel = viewModel(factory=HauntedViewModel.factory)) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // Load haunted place when the DetailedListing composable is first composed
     LaunchedEffect(hauntedPlaceId) {
         viewModel.loadHauntedPlaceById(hauntedPlaceId)
     }
@@ -108,7 +107,7 @@ fun Description(navController: NavController, hauntedPlace: HauntedPlace) {
                 color = GhostWhite,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(start = 10.dp, top = 10.dp),
-                text = hauntedPlace.desc ?: "No description"
+                text = hauntedPlace.desc  ?: ""
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -128,13 +127,13 @@ fun Description(navController: NavController, hauntedPlace: HauntedPlace) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Event time: ", fontWeight = FontWeight.Bold, color = GhostWhite)
-                    Text(text = "$eventTime", color = GhostWhite)
+                    Text(text = eventTime, color = GhostWhite)
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ){
                     Text(text = "Event price: ", fontWeight = FontWeight.Bold, color = GhostWhite)
-                    Text(text = "${hauntedPlace.price}", color = GhostWhite)
+                    Text(text = "$${hauntedPlace.price}", color = GhostWhite)
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth()
