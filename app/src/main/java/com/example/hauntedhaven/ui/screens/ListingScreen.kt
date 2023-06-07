@@ -55,7 +55,7 @@ fun ListingsPage(modifier: Modifier = Modifier, navController: NavController, vi
     val uiState by viewModel.uiState.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
 
-    Box(modifier = Modifier.background(PhantomBlack)) {
+    Box(modifier = Modifier.fillMaxSize().background(PhantomBlack)) {
         Column {
             TopBar(title = "Listings", navController = navController)
             HorizontalScroll( viewModel = viewModel)
@@ -98,7 +98,7 @@ fun ListingItem(listing: HauntedPlace, modifier: Modifier = Modifier, navControl
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            // Show the first image of the listing
+
             val imageResourceIds = imageMapper.getImageResourceIds(listing.id)
             if (imageResourceIds.isNotEmpty()) {
                 Image(
@@ -110,29 +110,44 @@ fun ListingItem(listing: HauntedPlace, modifier: Modifier = Modifier, navControl
                 )
             }
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    text = listing.name ?: "",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(16.dp, bottom = 30.dp),
-                    color = Color.White
-                )
-                Text(
-                    text = listing.location ?: "",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(16.dp),
-                    color = Color.White
-                )
+                Column(modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start) {
+                    Text(
+                        text = listing.name ?: "",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(16.dp, bottom = 30.dp),
+                        color = Color.White
+                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
 
-                Text(
-                    text = "Price: ${listing.price}",
-                    color = GhostWhite,
-                    fontFamily = FontFamily(Font(R.font.gothic))
-                )
+                        Column(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+
+
+                            Text(
+                                text = listing.location ?: "",
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(start = 16.dp),
+                                color = Color.White
+                            )
+
+                            Text(
+                                text = "Price: $${listing.price}",
+                                color = GhostWhite,
+                                modifier = Modifier.padding(16.dp),
+                                fontFamily = FontFamily(Font(R.font.gothic))
+                            )
+                        }
+                    }
+                }
             }
         }
     }
-}
+
 
 
 
