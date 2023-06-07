@@ -136,7 +136,7 @@ fun ListingItem(listing: HauntedPlace, modifier: Modifier = Modifier, navControl
                             )
 
                             Text(
-                                text = "Price: $${listing.price}",
+                                text = "Price: $${String.format("%.2f",listing.price)}",
                                 color = GhostWhite,
                                 modifier = Modifier.padding(16.dp),
                                 fontFamily = FontFamily(Font(R.font.gothic))
